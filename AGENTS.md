@@ -92,6 +92,7 @@ uv run uvicorn drafty.api.main:app --reload --port 8000
 cd frontend && npm install && npm run dev
 uv run python -m drafty.evals.run_evals --set smoke   # 5-brief smoke eval
 uv run python scripts/list_models.py      # owner runs this to find Nemotron model IDs
+git config core.hooksPath .githooks       # enable the Conventional Commits commit-msg hook
 docker build -t drafty:dev .
 ```
 
@@ -99,7 +100,12 @@ Keep these commands working. If you change one, update this file.
 
 ## Working style
 
-- Small, focused commits with clear messages. Run lint and offline tests before every commit.
+- Small, focused commits. Messages follow the polar project's Conventional Commits structure:
+  `type(scope): subject`, where type is one of `feat, fix, docs, style, refactor, perf, test, build,
+  ci, chore, revert`; type and scope are lower case; the subject is imperative and has no trailing
+  full stop; the header is at most 100 characters. A `commit-msg` hook enforces this after
+  `git config core.hooksPath .githooks`, and CI re-checks the pushed commits. Run lint and offline
+  tests before every commit.
 - Write tests alongside code. Engine functions get hand-checkable tests with stated inputs and
   expected outputs.
 - Prefer plain, readable Python over frameworks. The agent loop is our own code (about 200 to 400

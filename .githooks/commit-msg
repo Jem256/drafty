@@ -1,0 +1,4 @@
+#!/bin/sh
+# Conventional Commits check, mirroring the polar project's commitlint config.
+# Enable once per clone with: git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/scripts/commit_msg.py" "$1"

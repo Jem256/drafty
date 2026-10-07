@@ -29,6 +29,17 @@ uv run python scripts/list_models.py      # owner: find Nemotron model IDs
 docker build -t drafty:dev .
 ```
 
+## Contributing
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
+`type(scope): subject`. Enable the local `commit-msg` hook once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+CI re-checks every pushed commit with `scripts/commit_msg.py`.
+
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
