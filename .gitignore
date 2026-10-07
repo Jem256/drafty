@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Secrets and environment
+.env
+.env.*
+!.env.example
+
+# Runtime data and databases
+data/
+*.db
+*.sqlite3
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# Eval outputs (keep the directory marker)
+evals/reports/*
+!evals/reports/.gitkeep
+
+# Local planning docs and the handoff pack (owner instruction)
+docs/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

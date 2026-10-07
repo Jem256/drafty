@@ -1,0 +1,35 @@
+# Engineering thresholds used by the checker and engine.
+# OWNER ONLY: fill each value from the current published road drainage design manual you are working to.
+# Put the edition and clause in `source`, and set `verified: true` only after checking.
+# Agents must NOT edit values in this file. Tests use tests/fixtures/test_standards.yaml instead.
+# A null or unverified value produces a visible warning at runtime, never a guessed number.
+
+manning_n:
+  concrete: {value: null, source: "", verified: false}
+  masonry:  {value: null, source: "", verified: false}
+  grass:    {value: null, source: "", verified: false}
+  earth:    {value: null, source: "", verified: false}
+
+velocity_min_m_s: {value: null, source: "", verified: false}
+
+velocity_max_m_s:
+  concrete: {value: null, source: "", verified: false}
+  masonry:  {value: null, source: "", verified: false}
+  grass:    {value: null, source: "", verified: false}
+  earth:    {value: null, source: "", verified: false}
+
+freeboard_min_m:          {value: null, source: "", verified: false}
+drain_depth_max_m:        {value: null, source: "", verified: false}
+culvert_diameter_min_m:   {value: null, source: "", verified: false}
+culvert_cover_min_m:      {value: null, source: "", verified: false}
+culvert_wall_allowance_m: {value: null, source: "", verified: false}
+
+runoff_coefficient:
+  roofs_paved:   {value: null, source: "", verified: false}
+  gravel_road:   {value: null, source: "", verified: false}
+  tarmac_road:   {value: null, source: "", verified: false}
+  gardens_grass: {value: null, source: "", verified: false}
+
+crossfall_pct:
+  paved:  {value: null, source: "", verified: false}
+  gravel: {value: null, source: "", verified: false}

@@ -1,0 +1,33 @@
+# TEST FIXTURE ONLY. NOT DESIGN VALUES. NOT VERIFIED. DO NOT COPY INTO config/standards.yaml.
+# Round, plausible numbers chosen so tests are easy to hand-check. Real thresholds come only from the
+# design manual, entered by the owner in config/standards.yaml.
+
+manning_n:
+  concrete: {value: 0.015, source: "test fixture", verified: false}
+  masonry:  {value: 0.020, source: "test fixture", verified: false}
+  grass:    {value: 0.030, source: "test fixture", verified: false}
+  earth:    {value: 0.025, source: "test fixture", verified: false}
+
+velocity_min_m_s: {value: 0.6, source: "test fixture", verified: false}
+
+velocity_max_m_s:
+  concrete: {value: 4.0, source: "test fixture", verified: false}
+  masonry:  {value: 3.0, source: "test fixture", verified: false}
+  grass:    {value: 1.5, source: "test fixture", verified: false}
+  earth:    {value: 1.0, source: "test fixture", verified: false}
+
+freeboard_min_m:          {value: 0.15, source: "test fixture", verified: false}
+drain_depth_max_m:        {value: 1.2, source: "test fixture", verified: false}
+culvert_diameter_min_m:   {value: 0.6, source: "test fixture", verified: false}
+culvert_cover_min_m:      {value: 0.6, source: "test fixture", verified: false}
+culvert_wall_allowance_m: {value: 0.1, source: "test fixture", verified: false}
+
+runoff_coefficient:
+  roofs_paved:   {value: 0.9, source: "test fixture", verified: false}
+  gravel_road:   {value: 0.6, source: "test fixture", verified: false}
+  tarmac_road:   {value: 0.9, source: "test fixture", verified: false}
+  gardens_grass: {value: 0.3, source: "test fixture", verified: false}
+
+crossfall_pct:
+  paved:  {value: 2.5, source: "test fixture", verified: false}
+  gravel: {value: 4.0, source: "test fixture", verified: false}
