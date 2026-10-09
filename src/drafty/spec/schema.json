@@ -1,0 +1,1092 @@
+{
+  "$defs": {
+    "Alignment": {
+      "properties": {
+        "type": {
+          "default": "straight",
+          "enum": [
+            "straight",
+            "curved"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "bearing_deg": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bearing Deg"
+        },
+        "radius_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Radius M"
+        }
+      },
+      "title": "Alignment",
+      "type": "object"
+    },
+    "Assumption": {
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "reason"
+      ],
+      "title": "Assumption",
+      "type": "object"
+    },
+    "Catchment": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "area_ha": {
+          "exclusiveMinimum": 0,
+          "title": "Area Ha",
+          "type": "number"
+        },
+        "runoff_coefficient": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runoff Coefficient"
+        },
+        "feeds": {
+          "title": "Feeds",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "id",
+        "area_ha",
+        "feeds"
+      ],
+      "title": "Catchment",
+      "type": "object"
+    },
+    "CheckResult": {
+      "description": "One rule outcome. The message must say what to change, not just that it failed.",
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "element_id": {
+          "title": "Element Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "warn"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "measured": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measured"
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Limit"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "element_id",
+        "status",
+        "message"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "Constraint": {
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "side": {
+          "anyOf": [
+            {
+              "enum": [
+                "left",
+                "right"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Side"
+        },
+        "from_chainage_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From Chainage M"
+        },
+        "to_chainage_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To Chainage M"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Constraint",
+      "type": "object"
+    },
+    "Culvert": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "chainage_m": {
+          "minimum": 0,
+          "title": "Chainage M",
+          "type": "number"
+        },
+        "type": {
+          "const": "pipe",
+          "default": "pipe",
+          "title": "Type",
+          "type": "string"
+        },
+        "diameter_m": {
+          "exclusiveMinimum": 0,
+          "title": "Diameter M",
+          "type": "number"
+        },
+        "count": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        },
+        "length_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length M"
+        },
+        "invert_in_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert In M"
+        },
+        "invert_out_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert Out M"
+        },
+        "discharges_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Discharges To"
+        }
+      },
+      "required": [
+        "id",
+        "chainage_m",
+        "diameter_m"
+      ],
+      "title": "Culvert",
+      "type": "object"
+    },
+    "CulvertResult": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "design_flow_m3_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Design Flow M3 S"
+        },
+        "capacity_m3_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity M3 S"
+        },
+        "velocity_m_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Velocity M S"
+        },
+        "cover_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cover M"
+        },
+        "invert_in_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert In M"
+        },
+        "invert_out_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert Out M"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "CulvertResult",
+      "type": "object"
+    },
+    "Drain": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "side": {
+          "enum": [
+            "left",
+            "right"
+          ],
+          "title": "Side",
+          "type": "string"
+        },
+        "from_chainage_m": {
+          "minimum": 0,
+          "title": "From Chainage M",
+          "type": "number"
+        },
+        "to_chainage_m": {
+          "exclusiveMinimum": 0,
+          "title": "To Chainage M",
+          "type": "number"
+        },
+        "section": {
+          "$ref": "#/$defs/Section"
+        },
+        "lining": {
+          "enum": [
+            "concrete",
+            "masonry",
+            "grass",
+            "earth"
+          ],
+          "title": "Lining",
+          "type": "string"
+        },
+        "manning_n": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manning N"
+        },
+        "gradient": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gradient"
+        },
+        "outlet": {
+          "$ref": "#/$defs/Outlet"
+        }
+      },
+      "required": [
+        "id",
+        "side",
+        "from_chainage_m",
+        "to_chainage_m",
+        "section",
+        "lining",
+        "outlet"
+      ],
+      "title": "Drain",
+      "type": "object"
+    },
+    "DrainResult": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "design_flow_m3_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Design Flow M3 S"
+        },
+        "capacity_m3_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity M3 S"
+        },
+        "velocity_m_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Velocity M S"
+        },
+        "gradient": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gradient"
+        },
+        "design_depth_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Design Depth M"
+        },
+        "freeboard_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Freeboard M"
+        },
+        "flow_area_m2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flow Area M2"
+        },
+        "invert_up_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert Up M"
+        },
+        "invert_down_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invert Down M"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "DrainResult",
+      "type": "object"
+    },
+    "Meta": {
+      "description": "Spec metadata written by code, never by the model.",
+      "properties": {
+        "spec_version": {
+          "default": "0.1",
+          "title": "Spec Version",
+          "type": "string"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated At"
+        },
+        "model_setup": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Setup"
+        }
+      },
+      "required": [
+        "run_id"
+      ],
+      "title": "Meta",
+      "type": "object"
+    },
+    "Outlet": {
+      "properties": {
+        "type": {
+          "enum": [
+            "existing_channel",
+            "culvert",
+            "drain",
+            "soakaway"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ref"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Outlet",
+      "type": "object"
+    },
+    "ProfilePoint": {
+      "properties": {
+        "chainage_m": {
+          "minimum": 0,
+          "title": "Chainage M",
+          "type": "number"
+        },
+        "level_m": {
+          "title": "Level M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "chainage_m",
+        "level_m"
+      ],
+      "title": "ProfilePoint",
+      "type": "object"
+    },
+    "Project": {
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "location_description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Description"
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Purpose"
+        }
+      },
+      "title": "Project",
+      "type": "object"
+    },
+    "Quantities": {
+      "properties": {
+        "excavation_m3": {
+          "default": 0.0,
+          "title": "Excavation M3",
+          "type": "number"
+        },
+        "lining_area_m2": {
+          "default": 0.0,
+          "title": "Lining Area M2",
+          "type": "number"
+        },
+        "pipe_length_m": {
+          "default": 0.0,
+          "title": "Pipe Length M",
+          "type": "number"
+        },
+        "headwall_count": {
+          "default": 0,
+          "title": "Headwall Count",
+          "type": "integer"
+        }
+      },
+      "title": "Quantities",
+      "type": "object"
+    },
+    "Rainfall": {
+      "properties": {
+        "method": {
+          "const": "rational",
+          "default": "rational",
+          "title": "Method",
+          "type": "string"
+        },
+        "intensity_mm_per_hr": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intensity Mm Per Hr"
+        },
+        "return_period_yr": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Return Period Yr"
+        },
+        "source": {
+          "default": "placeholder",
+          "enum": [
+            "user",
+            "brief",
+            "placeholder"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "title": "Rainfall",
+      "type": "object"
+    },
+    "Results": {
+      "description": "Computed outputs. Written by code only.",
+      "properties": {
+        "drains": {
+          "items": {
+            "$ref": "#/$defs/DrainResult"
+          },
+          "title": "Drains",
+          "type": "array"
+        },
+        "culverts": {
+          "items": {
+            "$ref": "#/$defs/CulvertResult"
+          },
+          "title": "Culverts",
+          "type": "array"
+        },
+        "checks": {
+          "items": {
+            "$ref": "#/$defs/CheckResult"
+          },
+          "title": "Checks",
+          "type": "array"
+        },
+        "quantities": {
+          "$ref": "#/$defs/Quantities"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "title": "Results",
+      "type": "object"
+    },
+    "Road": {
+      "properties": {
+        "length_m": {
+          "exclusiveMinimum": 0,
+          "title": "Length M",
+          "type": "number"
+        },
+        "alignment": {
+          "$ref": "#/$defs/Alignment"
+        },
+        "carriageway_width_m": {
+          "exclusiveMinimum": 0,
+          "title": "Carriageway Width M",
+          "type": "number"
+        },
+        "shoulder_width_m": {
+          "$ref": "#/$defs/ShoulderWidths"
+        },
+        "camber": {
+          "default": "crown",
+          "enum": [
+            "crown",
+            "crossfall"
+          ],
+          "title": "Camber",
+          "type": "string"
+        },
+        "crossfall_pct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crossfall Pct"
+        },
+        "surface": {
+          "default": "gravel",
+          "enum": [
+            "gravel",
+            "tarmac",
+            "earth",
+            "concrete"
+          ],
+          "title": "Surface",
+          "type": "string"
+        },
+        "profile": {
+          "items": {
+            "$ref": "#/$defs/ProfilePoint"
+          },
+          "minItems": 2,
+          "title": "Profile",
+          "type": "array"
+        }
+      },
+      "required": [
+        "length_m",
+        "carriageway_width_m",
+        "shoulder_width_m",
+        "profile"
+      ],
+      "title": "Road",
+      "type": "object"
+    },
+    "Section": {
+      "properties": {
+        "shape": {
+          "enum": [
+            "rectangular",
+            "trapezoidal",
+            "v"
+          ],
+          "title": "Shape",
+          "type": "string"
+        },
+        "bottom_width_m": {
+          "minimum": 0,
+          "title": "Bottom Width M",
+          "type": "number"
+        },
+        "depth_m": {
+          "exclusiveMinimum": 0,
+          "title": "Depth M",
+          "type": "number"
+        },
+        "side_slope_h_per_v": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Side Slope H Per V",
+          "type": "number"
+        }
+      },
+      "required": [
+        "shape",
+        "bottom_width_m",
+        "depth_m"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "ShoulderWidths": {
+      "properties": {
+        "left": {
+          "minimum": 0,
+          "title": "Left",
+          "type": "number"
+        },
+        "right": {
+          "minimum": 0,
+          "title": "Right",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "right"
+      ],
+      "title": "ShoulderWidths",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "meta": {
+      "$ref": "#/$defs/Meta"
+    },
+    "project": {
+      "$ref": "#/$defs/Project"
+    },
+    "road": {
+      "$ref": "#/$defs/Road"
+    },
+    "rainfall": {
+      "$ref": "#/$defs/Rainfall"
+    },
+    "catchments": {
+      "items": {
+        "$ref": "#/$defs/Catchment"
+      },
+      "title": "Catchments",
+      "type": "array"
+    },
+    "drains": {
+      "items": {
+        "$ref": "#/$defs/Drain"
+      },
+      "title": "Drains",
+      "type": "array"
+    },
+    "culverts": {
+      "items": {
+        "$ref": "#/$defs/Culvert"
+      },
+      "title": "Culverts",
+      "type": "array"
+    },
+    "constraints": {
+      "items": {
+        "$ref": "#/$defs/Constraint"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "assumptions": {
+      "items": {
+        "$ref": "#/$defs/Assumption"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "open_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Open Questions",
+      "type": "array"
+    },
+    "results": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Results"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "meta",
+    "road",
+    "rainfall",
+    "catchments",
+    "drains"
+  ],
+  "title": "DesignSpec",
+  "type": "object"
+}
