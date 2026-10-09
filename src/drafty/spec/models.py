@@ -101,6 +101,8 @@ class Section(BaseModel):
     def _check_shape(self) -> Section:
         if self.shape in ("rectangular", "trapezoidal") and self.bottom_width_m <= 0:
             raise ValueError(f"{self.shape} sections need a positive bottom_width_m")
+        if self.shape == "v" and self.bottom_width_m != 0:
+            raise ValueError("v sections have no bottom width; set bottom_width_m to 0")
         return self
 
 

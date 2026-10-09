@@ -58,6 +58,7 @@ class LLMResult:
     tokens_in: int
     tokens_out: int
     latency_ms: float
+    parse_error: str | None = None
 
 
 class ModelsConfig:
@@ -143,11 +144,12 @@ def _to_result(response: Any, response_schema: type[BaseModel] | None) -> LLMRes
         tool_calls.append(ToolCall(id=call.id, name=call.function.name, arguments=arguments))
 
     parsed = None
+    parse_error = None
     if response_schema is not None and content:
         try:
             parsed = response_schema.model_validate_json(content)
-        except ValueError:
-            parsed = None
+        except ValueError as exc:
+            parse_error = str(exc)
 
     usage = getattr(response, "usage", None)
     return LLMResult(
@@ -157,6 +159,7 @@ def _to_result(response: Any, response_schema: type[BaseModel] | None) -> LLMRes
         tokens_in=getattr(usage, "prompt_tokens", 0) or 0,
         tokens_out=getattr(usage, "completion_tokens", 0) or 0,
         latency_ms=0.0,
+        parse_error=parse_error,
     )
 
 

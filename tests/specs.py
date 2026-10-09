@@ -12,6 +12,7 @@ from drafty.spec.models import (
     DrainResult,
     Meta,
     Outlet,
+    ParsedBrief,
     ProfilePoint,
     Project,
     Rainfall,
@@ -239,3 +240,37 @@ def culvert_results(**kwargs) -> Results:
     defaults = {"id": "C-01"}
     defaults.update(kwargs)
     return Results(culverts=[CulvertResult(**defaults)])
+
+
+def _as_parsed(spec: DesignSpec) -> ParsedBrief:
+    return ParsedBrief.model_validate(spec.model_dump(exclude={"meta", "results"}))
+
+
+def parsed_example(with_data: bool = True) -> ParsedBrief:
+    return _as_parsed(example_spec(with_data=with_data))
+
+
+def parsed_happy() -> ParsedBrief:
+    return _as_parsed(happy_spec())
+
+
+def parsed_with_questions() -> ParsedBrief:
+    data = example_spec(with_data=False).model_dump(exclude={"meta", "results"})
+    data["open_questions"] = ["What design rainfall intensity and return period should I use?"]
+    return ParsedBrief.model_validate(data)
+
+
+def parsed_no_drains() -> ParsedBrief:
+    return ParsedBrief.model_validate(
+        {
+            "project": {"name": "Empty road"},
+            "road": road(200.0, 100.0, 96.0, crossfall_pct=2.5).model_dump(),
+            "rainfall": {"intensity_mm_per_hr": 100.0, "return_period_yr": 10.0, "source": "user"},
+            "catchments": [],
+            "drains": [],
+            "culverts": [],
+            "constraints": [],
+            "assumptions": [],
+            "open_questions": [],
+        }
+    )
