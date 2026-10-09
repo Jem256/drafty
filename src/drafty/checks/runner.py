@@ -28,9 +28,20 @@ ALL_RULES: list[Rule] = [
 ]
 
 
-def run_checks(spec: DesignSpec, results: Results, standards: Standards) -> list[CheckResult]:
-    """Run all rules and return their results in order."""
+def run_checks(
+    spec: DesignSpec,
+    results: Results,
+    standards: Standards,
+    dxf_path: str | None = None,
+) -> list[CheckResult]:
+    """Run all rules and return their results in order.
+
+    ``dxf_path`` is passed to CAD-LAYERS when a drawing has been written.
+    """
     checks: list[CheckResult] = []
     for rule in ALL_RULES:
-        checks.extend(rule(spec, results, standards))
+        if rule is rules.check_cad_layers:
+            checks.extend(rule(spec, results, standards, dxf_path))
+        else:
+            checks.extend(rule(spec, results, standards))
     return checks

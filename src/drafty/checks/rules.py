@@ -6,6 +6,7 @@ missing threshold produces ``warn``, never a guessed number. Messages say what t
 
 from __future__ import annotations
 
+from drafty.cad import dxf_writer
 from drafty.engine import network
 from drafty.engine.standards import Standards
 from drafty.spec.models import CheckResult, CheckStatus, DesignSpec, Results
@@ -650,6 +651,38 @@ def check_con_site(spec: DesignSpec, results: Results, standards: Standards) -> 
     return out
 
 
-def check_cad_layers(spec: DesignSpec, results: Results, standards: Standards) -> list[CheckResult]:
-    """Stub until Phase 3 replaces it with a check that reads the DXF."""
-    return []
+def check_cad_layers(
+    spec: DesignSpec,
+    results: Results,
+    standards: Standards,
+    dxf_path: str | None = None,
+) -> list[CheckResult]:
+    """Check that every DXF entity sits on a standard layer. Skipped until a drawing exists."""
+    if dxf_path is None:
+        return []
+    offending = dxf_writer.nonstandard_layers(dxf_path)
+    if not offending:
+        return [
+            _result(
+                "CAD-LAYERS",
+                "drawing",
+                "pass",
+                None,
+                None,
+                "All DXF entities are on standard layers.",
+            )
+        ]
+    out: list[CheckResult] = []
+    for layer, dxftype in offending:
+        out.append(
+            _result(
+                "CAD-LAYERS",
+                layer,
+                "fail",
+                None,
+                None,
+                f"CAD-LAYERS failed: {dxftype} entity on non-standard layer '{layer}'; move it "
+                "to a standard layer.",
+            )
+        )
+    return out
