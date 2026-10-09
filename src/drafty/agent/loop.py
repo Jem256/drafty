@@ -13,7 +13,7 @@ from uuid import uuid4
 
 from drafty.agent import draft as draft_module
 from drafty.agent import revise as revise_module
-from drafty.agent.budget import BudgetExceeded
+from drafty.agent.budget import Budget, BudgetExceeded
 from drafty.agent.clarify import merge_answers, phrase_questions
 from drafty.agent.explain import explain
 from drafty.agent.parse_brief import ParseError, parse
@@ -60,6 +60,7 @@ class Controller:
         limits: dict | None = None,
         render: bool = True,
         setup: str = "routed",
+        run_id: str | None = None,
     ) -> None:
         self.llm = llm
         self.standards = standards
@@ -68,6 +69,7 @@ class Controller:
         self.data_dir = Path(data_dir) if data_dir is not None else None
         self.render = render
         self.setup = setup
+        self._provided_run_id = run_id
         self.limits = limits or {}
         self.revision_cap = self.limits.get("revision_cap", 5)
         self.parse_retries = self.limits.get("parse_retries", 2)
@@ -83,10 +85,11 @@ class Controller:
 
     def start(self, brief: str) -> RunOutcome:
         self._brief = brief
-        self.run_id = f"r-{uuid4().hex[:8]}"
+        self.run_id = self._provided_run_id or f"r-{uuid4().hex[:8]}"
         if self.db is not None:
             self.db.create_run(self.run_id, state="received", brief=brief)
         self.tracer = Tracer(self.db, self.run_id)
+        self._wire_llm()
         self._set_state("received")
 
         try:
@@ -115,6 +118,7 @@ class Controller:
     def resume(self, answers: dict[str, str] | str) -> RunOutcome:
         if self.spec is None:
             raise RuntimeError("there is no paused run to resume")
+        self._wire_llm()
         try:
             parsed = merge_answers(self.llm, self.spec, answers)
         except ParseError as exc:
@@ -128,6 +132,18 @@ class Controller:
         return DesignSpec(
             meta=Meta(run_id=self.run_id or "", model_setup=self.setup), **parsed.model_dump()
         )
+
+    def _wire_llm(self) -> None:
+        """Give the LLM this run's tracer and a fresh budget, when it supports them."""
+        if self.budget is None:
+            self.budget = Budget(
+                run_token_budget=self.limits.get("run_token_budget"),
+                daily_token_cap=self.limits.get("daily_token_cap"),
+            )
+        if hasattr(self.llm, "tracer"):
+            self.llm.tracer = self.tracer
+        if hasattr(self.llm, "budget"):
+            self.llm.budget = self.budget
 
     def _design(self) -> RunOutcome:
         assert self.spec is not None
