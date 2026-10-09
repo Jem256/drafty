@@ -1,0 +1,59 @@
+# TEST FIXTURE ONLY. Not real model ids. Mirrors config/models.yaml so offline tests can resolve roles.
+# nano has json_mode: false here to exercise the "return only JSON" fallback path.
+
+provider:
+  base_url: https://api.tokenfactory.nebius.com/v1/
+  api_key_env: NEBIUS_API_KEY
+
+models:
+  ultra: test-nemotron-ultra
+  super: test-nemotron-super
+  nano: test-nemotron-nano
+
+capabilities:
+  ultra: {json_mode: true, tool_calling: true}
+  super: {json_mode: true, tool_calling: true}
+  nano: {json_mode: false, tool_calling: true}
+
+setups:
+  routed:
+    route: nano
+    parse: ultra
+    clarify: nano
+    draft: super
+    draft_fallback: ultra
+    revise: ultra
+    explain: super
+    label: nano
+  all_ultra:
+    route: ultra
+    parse: ultra
+    clarify: ultra
+    draft: ultra
+    draft_fallback: ultra
+    revise: ultra
+    explain: ultra
+    label: ultra
+  all_super:
+    route: super
+    parse: super
+    clarify: super
+    draft: super
+    draft_fallback: super
+    revise: super
+    explain: super
+    label: super
+
+roles:
+  route: {temperature: 0.0, max_tokens: 64}
+  parse: {temperature: 0.1, max_tokens: 4096}
+  clarify: {temperature: 0.3, max_tokens: 400}
+  draft: {temperature: 0.2, max_tokens: 2048}
+  revise: {temperature: 0.2, max_tokens: 2048}
+  explain: {temperature: 0.3, max_tokens: 800}
+  label: {temperature: 0.2, max_tokens: 200}
+
+limits:
+  parse_retries: 2
+  invalid_drafts_before_cascade: 2
+  revision_cap: 5
